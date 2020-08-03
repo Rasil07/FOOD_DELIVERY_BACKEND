@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const authRoutes = require("./Service/authRoutes");
 require("dotenv").config();
 const cors = require("cors");
 
@@ -25,4 +26,4 @@ const dishRouter = require("./Routes/dish.routes");
 
 app.use("/user", userRouter);
 app.use("/order", orderRouter);
-app.use("/dish", dishRouter);
+app.use("/dish", authRoutes, dishRouter);
