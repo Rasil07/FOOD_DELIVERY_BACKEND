@@ -1,30 +1,6 @@
 const User = require("../Model/User");
 const bcrypt = require("bcrypt");
-const generateToken = require("../Service/generateJWT");
 const saltRounds = 10;
-async function login(req, res) {
-  User.findOne({ email: req.body.email })
-    .then((user) => {
-      if (!user) {
-        return res.status(400).json({ message: "User not found" });
-      }
-      bcrypt
-        .compare(req.body.password, user.password)
-        .then((result) => {
-          if (result == true) {
-            const token = generateToken(user, res);
-            return res.status(200).json({ token: token });
-          }
-          return res.status(400).json({ message: "Incorrect password" });
-        })
-        .catch((error) => {
-          return res.status(400).json({ message: `${error.message}` });
-        });
-    })
-    .catch((err) => {
-      return res.status(400).json({ message: `${err}` });
-    });
-}
 
 async function register(req, res) {
   User.findOne({ email: req.body.email })
@@ -53,13 +29,11 @@ async function register(req, res) {
             .save()
             .then(() => {
               const token = generateToken(user, res);
-              return res
-                .status(200)
-                .json({
-                  success: true,
-                  message: `${user.name} Registered`,
-                  token: token,
-                });
+              return res.status(200).json({
+                success: true,
+                message: `${user.name} Registered`,
+                token: token,
+              });
             })
             .catch((err) => {
               return res
@@ -76,4 +50,4 @@ async function register(req, res) {
     });
 }
 
-module.exports = { login, register };
+module.exports = { register };

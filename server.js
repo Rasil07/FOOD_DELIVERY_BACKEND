@@ -1,29 +1,44 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const authRoutes = require("./Service/authRoutes");
+const connectDB = require("./db");
 require("dotenv").config();
 const cors = require("cors");
 
-const uri = process.env.uri;
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", function () {
-  console.log("Mongoose database connected");
-});
 const app = express();
 const port = 5000;
 
 app.use(express.json());
 app.use(cors());
-app.listen(port, (req, res) => {
-  console.log(`Server listening port ${port}`);
-});
 
-const userRouter = require("./Routes/user.routes");
+connectDB();
+
+const userRouter = require("./Routes").user;
 const orderRouter = require("./Routes/order.routes");
-const dishRouter = require("./Routes/dish.routes");
+const dishRouter = require("./Routes").dish;
 
 app.use("/user", userRouter);
 app.use("/order", orderRouter);
-app.use("/dish", authRoutes, dishRouter);
+app.use("/dish", dishRouter);
+
+app.use((req, res, next) => {
+  res.status(404);
+  next({
+    status: 404,
+    message: "404 page not found",
+  });
+});
+
+/**
+ * Error Handling Middleware
+ */
+app.use((err, req, res, next) => {
+  res.status(err.status || 400);
+  res.json({
+    status: err.status,
+    message: err.message,
+  });
+});
+
+app.listen(port, (req, res) => {
+  console.log(`Server listening port ${port}`);
+});

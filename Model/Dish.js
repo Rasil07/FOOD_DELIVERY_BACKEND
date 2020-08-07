@@ -7,7 +7,7 @@ const newDishSchema = new Schema({
     required: true,
   },
   category: {
-    type: Boolean,
+    type: String,
     required: true,
   },
   price: {

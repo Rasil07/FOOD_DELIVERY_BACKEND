@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
-const secret = process.env.jwtSecret;
+const config = require("../config");
+
+const secret = config.development.secret;
 module.exports = function decodeToken(req, res) {
   let token = req.body.headers["auth-token"];
 

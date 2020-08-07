@@ -1,7 +1,10 @@
 const jwt = require("jsonwebtoken");
 
-module.exports = function authRoutes(req, res, next) {
+function adminAuthRoutes(req, res, next) {
   const secret = process.env.jwtSecret;
+  if (!req.body.headers) {
+    return res.status(404).json({ message: "No auth token present" });
+  }
   let token = req.body.headers["auth-token"];
   if (!token) {
     return res.status(404).json({ message: "No auth token present" });
@@ -19,4 +22,23 @@ module.exports = function authRoutes(req, res, next) {
       }
     }
   });
-};
+}
+function loggedUserAuth(req, res, next) {
+  const secret = process.env.jwtSecret;
+  if (!req.body.headers) {
+    return res.status(404).json({ message: "No auth token present" });
+  }
+  let token = req.body.headers["auth-token"];
+  if (!token) {
+    return res.status(404).json({ message: "No auth token present" });
+  }
+  jwt.verify(token, secret, (err, decoded) => {
+    if (err) {
+      return res.status(400).json({ message: `${err.message}` });
+    }
+    if (decoded) {
+      next();
+    }
+  });
+}
+module.exports = { adminAuthRoutes, loggedUserAuth };
