@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
+const config = require("../config/");
+
+const secret = config.development.secret;
 
 function adminAuthRoutes(req, res, next) {
-  const secret = process.env.jwtSecret;
   if (!req.body.headers) {
     return res.status(404).json({ message: "No auth token present" });
   }
@@ -24,7 +26,6 @@ function adminAuthRoutes(req, res, next) {
   });
 }
 function loggedUserAuth(req, res, next) {
-  const secret = process.env.jwtSecret;
   if (!req.body.headers) {
     return res.status(404).json({ message: "No auth token present" });
   }

@@ -11,8 +11,8 @@ module.exports = async (req, res, next) => {
         expiresIn: "2h",
       }
     );
-    return res.status(200).json({ token: token });
-    next();
+
+    return res.status(200).json({ token: token, message: "Login Succesful" });
   } catch (error) {
     return next({
       status: 400,

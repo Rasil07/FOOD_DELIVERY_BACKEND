@@ -6,14 +6,16 @@ const newOrderSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: "User",
   },
-  order_list: [
-    {
-      item: {
-        type: Schema.Types.ObjectId,
-        ref: "Dish",
+  order_list: {
+    items: [
+      {
+        dishId: { type: Schema.Types.ObjectId, ref: "Dish" },
+
+        quantity: { type: String, required: true },
       },
-    },
-  ],
+    ],
+  },
+
   ordered_date: {
     type: Date,
     default: Date.now,
@@ -21,6 +23,10 @@ const newOrderSchema = new Schema({
   delivery_status: {
     type: Boolean,
     default: false,
+  },
+  total_price: {
+    type: String,
+    required: true,
   },
 });
 

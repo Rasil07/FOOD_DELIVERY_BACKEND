@@ -14,6 +14,10 @@ const newDishSchema = new Schema({
     type: mongoose.Number,
     required: true,
   },
+  image: {
+    type: String,
+    required: true,
+  },
 });
 
 const Dish = mongoose.model("Dish", newDishSchema);

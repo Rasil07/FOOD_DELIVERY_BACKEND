@@ -6,12 +6,18 @@ module.exports = function decodeToken(req, res) {
   let token = req.body.headers["auth-token"];
 
   if (!token) {
-    return res.status(404).json({ message: "No auth token present" });
+    return next({
+      status: 400,
+      message: [{ msg: "No auth token present" }],
+    });
   }
 
   jwt.verify(token, secret, (err, decoded) => {
     if (err) {
-      return res.status(400).json({ message: `${err.message}` });
+      return next({
+        status: 400,
+        message: [{ msg: `${err.message}` }],
+      });
     }
     return res.status(200).json({ decoded: decoded });
   });

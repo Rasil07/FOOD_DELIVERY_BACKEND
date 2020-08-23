@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const { check, body } = require("express-validator");
 
-const { login, register } = require("../Controller");
+const { login, register } = require("../Controller/auth/");
 
 const decodeToken = require("../Service/decodeToken");
 
@@ -24,9 +24,11 @@ router.route("/register").post(
         }
       }),
     body("address").notEmpty().withMessage("Address field in empty"),
-    body("contact_no", "Invalid contact number ")
+    body("contact_no")
       .matches(/9[0-8][0-9]{8}/)
-      .isLength({ min: 10, max: 10 }),
+      .withMessage("The number is invalid")
+      .isLength({ min: 10, max: 10 })
+      .withMessage("Contact number must contain exact 10 didgits"),
   ],
   validate,
   register,
@@ -37,12 +39,9 @@ router
   .route("/login")
   .post(
     [
-      body("email")
-        .notEmpty()
-        .withMessage("Email is required!!")
-        .isEmail()
-        .withMessage("Enter valid email!!!"),
-      body("password", "Password is required!!!").notEmpty(),
+      check("email").notEmpty().withMessage("Email field is empty."),
+      check("email").isEmail().withMessage("Enter valid email!!!"),
+      check("password", "Password is required!!!").notEmpty(),
     ],
     validate,
     login,

@@ -11,23 +11,23 @@ module.exports = async (req, res, next) => {
     if (!user) {
       return next({
         status: 404,
-        message: [{ msg: "User doesnt exists" }],
+        message: ["User doesnt exists"],
       });
     }
     let matches = await bcrypt.compare(password, user.password);
 
-    if (matches) {
-      req.body = { user: user };
-      next();
+    if (!matches) {
+      return next({
+        status: 400,
+        message: ["Invalid credentials"],
+      });
     }
-    return next({
-      status: 400,
-      message: [{ msg: "Invalid credentials" }],
-    });
+    req.body = { user: user };
+    return next();
   } catch (error) {
     return next({
       status: 400,
-      message: error.message,
+      message: [error.message],
     });
   }
 };

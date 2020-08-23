@@ -13,9 +13,10 @@ app.use(cors());
 connectDB();
 
 const userRouter = require("./Routes").user;
-const orderRouter = require("./Routes/order.routes");
+const orderRouter = require("./Routes").order;
 const dishRouter = require("./Routes").dish;
 
+app.use("/upload", express.static(`upload`));
 app.use("/user", userRouter);
 app.use("/order", orderRouter);
 app.use("/dish", dishRouter);
