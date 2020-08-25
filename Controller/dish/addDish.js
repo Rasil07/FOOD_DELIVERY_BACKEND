@@ -6,6 +6,7 @@ module.exports = async (req, res, next) => {
   const { name, category, price } = req.body;
   const imageName = req.file.filename;
   const image = `http://localhost:5000/upload/${imageName}`;
+
   try {
     let dish = await Dish.findOne({ name });
     if (dish) {
