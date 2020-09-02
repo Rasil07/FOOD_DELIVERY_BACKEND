@@ -15,16 +15,18 @@ const {
 router.route("/").get(getDish);
 
 //route for adding dishes
-router.route("/add").post(
-  // [
-  //   body("name").notEmpty().withMessage("Name of dish is required"),
-  //   body("category").notEmpty().withMessage("Category of dish is required"),
-  //   body("price").notEmpty().withMessage("Price of dish os required"),
-  // ],
-  // validate,
-  upload.upload.single("image"),
-  addDish
-);
+router
+  .route("/add")
+  .post(
+    upload.upload.single("image"),
+    [
+      check("name").notEmpty().withMessage("Name of dish is required"),
+      check("category").notEmpty().withMessage("Category of dish is required"),
+      check("price").notEmpty().withMessage("Price of dish os required"),
+    ],
+    validate,
+    addDish
+  );
 
 //route for delete dish
 router.route("/delete/:id").post(adminAuthRoutes, deleteDish);

@@ -7,9 +7,12 @@ module.exports = async (req, res, next) => {
   try {
     let dish = await Dish.findOne({ _id: id });
     let imagePath = JSON.stringify(dish.image);
-    let arrays = imagePath.split("/");
-    let image = arrays.pop().split('"')[0];
-    await promisify(fs.unlink)(`upload/${image}`);
+    if (imagePath) {
+      let arrays = imagePath.split("/");
+      let image = arrays.pop().split('"')[0];
+      await promisify(fs.unlink)(`upload/${image}`);
+    }
+
     if (!dish) {
       return next({
         status: 404,
