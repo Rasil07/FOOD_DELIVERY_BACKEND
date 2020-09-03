@@ -18,6 +18,7 @@ router.route("/").get(getDish);
 router
   .route("/add")
   .post(
+    adminAuthRoutes,
     upload.upload.single("image"),
     [
       check("name").notEmpty().withMessage("Name of dish is required"),
@@ -32,6 +33,18 @@ router
 router.route("/delete/:id").post(adminAuthRoutes, deleteDish);
 
 //route for editing dishes
-router.route("/edit/:id").post(adminAuthRoutes, editDish);
+router
+  .route("/edit/:id")
+  .post(
+    adminAuthRoutes,
+    upload.upload.single("image"),
+    [
+      check("name").notEmpty().withMessage("Name of dish is required"),
+      check("category").notEmpty().withMessage("Category of dish is required"),
+      check("price").notEmpty().withMessage("Price of dish os required"),
+    ],
+    validate,
+    editDish
+  );
 
 module.exports = router;

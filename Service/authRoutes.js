@@ -4,10 +4,10 @@ const config = require("../config/");
 const secret = config.development.secret;
 
 function adminAuthRoutes(req, res, next) {
-  if (!req.body.headers) {
+  if (!req.headers["auth-token"]) {
     return res.status(404).json({ message: "No auth token present" });
   }
-  let token = req.body.headers["auth-token"];
+  let token = req.headers["auth-token"];
   if (!token) {
     return res.status(404).json({ message: "No auth token present" });
   }
@@ -16,7 +16,6 @@ function adminAuthRoutes(req, res, next) {
       return res.status(400).json({ message: `${err.message}` });
     }
     if (decoded) {
-      //   console.log(decoded);
       if (decoded.data.isAdmin === true) {
         next();
       } else {
@@ -26,10 +25,10 @@ function adminAuthRoutes(req, res, next) {
   });
 }
 function loggedUserAuth(req, res, next) {
-  if (!req.body.headers) {
+  if (!req.headers["auth-token"]) {
     return res.status(404).json({ message: "No auth token present" });
   }
-  let token = req.body.headers["auth-token"];
+  let token = req.headers["auth-token"];
   if (!token) {
     return res.status(404).json({ message: "No auth token present" });
   }
