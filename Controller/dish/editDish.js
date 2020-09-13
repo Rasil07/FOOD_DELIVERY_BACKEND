@@ -3,7 +3,6 @@ const deleteImage = require("../../utils/deleteImage");
 module.exports = async (req, res, next) => {
   const { id } = req.params;
   let { name, category, price } = req.body;
-  // console.log(id, name, category, price, req.file);
 
   try {
     let dish = await Dish.findOne({ _id: id });

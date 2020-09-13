@@ -3,7 +3,6 @@ const { promisify } = require("util");
 const deleteImage = require("../../utils/deleteImage");
 //get all dishes
 module.exports = async (req, res, next) => {
-  // console.log(req.file, req.body);
   const { name, category, price } = req.body;
   if (!req.file) {
     return next({

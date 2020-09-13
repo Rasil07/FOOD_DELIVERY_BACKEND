@@ -1,3 +1,5 @@
 const saveOrder = require("./saveOrder");
+const getAllOrder = require("./getAllOrders");
+const deleteOrder = require("./deleteOrder");
 
-module.exports = { saveOrder };
+module.exports = { saveOrder, getAllOrder, deleteOrder };
