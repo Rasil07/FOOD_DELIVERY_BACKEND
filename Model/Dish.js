@@ -7,11 +7,15 @@ const newDishSchema = new Schema({
     required: true,
   },
   category: {
-    type: Boolean,
+    type: String,
     required: true,
   },
   price: {
     type: mongoose.Number,
+    required: true,
+  },
+  image: {
+    type: String,
     required: true,
   },
 });
